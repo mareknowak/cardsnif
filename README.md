@@ -1,6 +1,6 @@
 # CardsNif
 
-This repository contains code for card game of
+This repository contains code for the card game of
 [War](https://en.wikipedia.org/wiki/War_(card_game)) written in Elixir. Some
 functions are implemented as Rust NIFs (Native Implemented Functions) with help
 of [rustler](https://github.com/rusterlium/rustler) library. Data conversion
@@ -32,7 +32,7 @@ treat Elixir as kind of postman that sends prepared commands.
 
 In our card game we have processes for Game (arbiter) and two Players. Let us
 take a Player process as an example ([player_rust.ex](lib/player_rust.ex)). It
-receives from Game *messages* to add or remove card. Player's *model* is simply
+receives from Game *messages* to add or remove cards. Player's *model* is simply
 a list of cards. It's *update* function changes the model (adds or removes
 cards) and prepares commands/responses (cards added, cards removed, unable to
 remove cards) that are sent back to Game by Players's *execute* function.
@@ -57,7 +57,7 @@ $ mix do deps.get, compile
 $ kerl_deactivate
 ```
 
-Game can be run in two flavours, with Rust NIFs or with Elixir only functions,
+Game can be run in two ways, with Rust NIFs or with Elixir only functions,
 as follows:
 
 ```bash
