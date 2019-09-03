@@ -211,10 +211,10 @@ defmodule GameRust do
   def process(model) do
     receive do
       msg ->
-        ts1 = Time.utc_now()
+        ts1 = System.monotonic_time(:microsecond)
         {model, cmd} = update(model, msg)
-        ts2 = Time.utc_now()
-        delta = Time.diff(ts2, ts1, :microsecond)
+        ts2 = System.monotonic_time(:microsecond)
+        delta = ts2 - ts1
         execute(model, cmd, delta)
         process(model)
     end

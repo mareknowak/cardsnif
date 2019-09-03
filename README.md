@@ -39,14 +39,24 @@ remove cards) that are sent back to Game by Players's *execute* function.
 
 ## Installation
 
-First clone or copy repository and cd into it:
+The repository contains three directiories with three different versions: elixir
+(no NIFs, Elixir code only), nif_rustler (only rustler library, no serde) and
+nif_serde_rustler (with serde_rustler library).
+
+First clone or copy repository and cd into directory:
 
 ```bash
-$ cd cardsnif
+$ cd elixir
+$ mix do deps.get, compile
+```
+or 
+
+```bash
+$ cd nif_rustler # or nif_serde_rustler
 ```
 
 At the time of writing **rustler** compilation is not supported for Erlang 22
-and we have to temporary switch to Erlang 21.3 using for example
+and we have to temporarily switch to Erlang 21.3 using for example
 [kerl](https://github.com/kerl/kerl). After building Erlang 21.3 and installing
 it in `~/kerl/21.3` we can compile our project and then switch back to Erlang
 22:
@@ -57,22 +67,26 @@ $ mix do deps.get, compile
 $ kerl_deactivate
 ```
 
-Game can be run in two ways, with Rust NIFs or with Elixir only functions,
-as follows:
+Game can be run as follows:
 
 ```bash
 $ iex -S mix
-$ Start.play_rust() # or Start.play_elixir()
+$ Start.play() 
 ```
 
-Execution time of subsequent Game updates is recorded in *replay_rust.txt* or
-*replay_elixir.txt* in the current directory.
+Execution time of subsequent Game updates is recorded in *replay.txt* in the
+current directory.
 
 ## Conclusions
 
-### Rust and Elixir interplay easily
+### rustler and serde_rustler libraries
 
-Data conversion between Rust and Elixir is done flawlessly by
+[Rustler](https://github.com/rusterlium/rustler) library can be used to decode
+Erlang terms to Rust types and encode them back to Erlang. One can find examples
+of custom decoders and encoders in *nif_rustler* directory. 
+
+Implementing decoders and encoder can be a bit tedious in *rustler*. On the
+other side data conversion between Rust and Elixir is done flawlessly by
 [serde_rustler](https://github.com/sunny-g/serde_rustler) crate. One has to only
 put some annotations in types definitions. For example:
 
@@ -125,15 +139,16 @@ defmodule PlayerRust do
 end
 ```
 
-### Rust NIF version runs slower
+### Time of execution
 
-Serialization and deserialization is relatively easy but is not free. The
-simplest Elixir's update function takes 1-4 microseconds but its Rust's
-counterpart needs from 100 to 400 microseconds so Elixir's version of the whole
-game runs faster than Rust's one! Only shuffling the deck of 52 cards is faster
-in Rust. *Caveat! First run of a Rust NIF function takes a lot of time (like
-20000 microseconds or more). Subsequent runs are much faster.*
+*Serde_rustler* is a nice library but *rustler* is faster. On my machine
+execution of the *rustler* version of a game *update* function takes on average
+about 60 microseconds while *serde_rustler* takes about 160 microseconds.
 
-If speed is the only concern then one should consider substituting Elixir
-function with Rust NIF only if its execution time is greater then 500
-microseconds.
+How does it compare to Elixir version of the game? Simple *update* runs in about
+5 microsecond so Rust NIF versions are slower. Only shuffling the deck of 52
+cards is faster in Rust. *Caveat! First run of a Rust NIF function can take a
+lot of time (like 20000 microseconds or more). Subsequent runs are much faster.*
+
+If speed is the only concern then one should carefuly measure the speed of
+execution of Elixir function before replacing it with NIF.

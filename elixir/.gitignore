@@ -26,5 +26,4 @@ erl_crash.dump
 cardsnif-*.tar
 
 
-replay_elixir.txt
-replay_rust.txt
+replay.txt

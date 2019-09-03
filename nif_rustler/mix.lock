@@ -1,0 +1,5 @@
+%{
+  "dialyxir": {:hex, :dialyxir, "0.5.1", "b331b091720fd93e878137add264bac4f644e1ddae07a70bf7062c7862c4b952", [:mix], [], "hexpm"},
+  "exceptional": {:hex, :exceptional, "2.1.1", "f18f8c1be63aab7fe8f3000cf2a8678936544fc39af1e2bc4a5c3c9e38cd8899", [:mix], [], "hexpm"},
+  "rustler": {:hex, :rustler, "0.20.0", "6b2cc8149700a7b1df2226dbe273ec1f9449318cad3bd3b5b68125a4cf1f438b", [:mix], [], "hexpm"},
+}
