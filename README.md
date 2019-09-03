@@ -31,11 +31,12 @@ This separation allows us to implement `update` in statically typed Rust and
 treat Elixir as kind of postman that sends prepared commands.
 
 In our card game we have processes for Game (arbiter) and two Players. Let us
-take a Player process as an example ([player_rust.ex](lib/player_rust.ex)). It
-receives from Game *messages* to add or remove cards. Player's *model* is simply
-a list of cards. It's *update* function changes the model (adds or removes
-cards) and prepares commands/responses (cards added, cards removed, unable to
-remove cards) that are sent back to Game by Players's *execute* function.
+take a Player process as an example
+([player_rust.ex](nif_rustler/lib/player_rust.ex)). It receives from Game
+*messages* to add or remove cards. Player's *model* is simply a list of cards.
+It's *update* function changes the model (adds or removes cards) and prepares
+commands/responses (cards added, cards removed, unable to remove cards) that are
+sent back to Game by Players's *execute* function.
 
 ## Installation
 
